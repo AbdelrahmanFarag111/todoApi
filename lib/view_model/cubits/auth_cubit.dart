@@ -74,12 +74,10 @@ class AuthCubit extends Cubit<AuthState> {
       }
     });
   }
+
   void logout() async {
     emit(LogoutLoadingState());
-    await DioHelper.post(
-      path: EndPoints.logout,
-      withToken: true
-    ).then((value) {
+    await DioHelper.post(path: EndPoints.logout, withToken: true).then((value) {
       // print(value.data);
       emit(LogoutSuccessState());
     }).catchError((error) {
@@ -91,5 +89,4 @@ class AuthCubit extends Cubit<AuthState> {
       }
     });
   }
-
 }

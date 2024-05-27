@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapi/translation/locale_keys.g.dart';
 import 'package:todoapi/view/auth/login_screen.dart';
 import 'package:todoapi/view_model/cubits/auth_cubit.dart';
+import 'package:todoapi/view_model/data/local/shared_helper.dart';
 import 'package:todoapi/view_model/utils/app_colors.dart';
 import 'package:todoapi/view_model/utils/navigation.dart';
 import 'package:todoapi/view_model/utils/snackbar.dart';
@@ -48,30 +49,16 @@ class TasksScreen extends StatelessWidget {
               color: AppColors.white,
             ),
           ),
-          BlocConsumer<AuthCubit, AuthState>(
-            listener: (context, state) {
-              if (state is LogoutSuccessState) {
-                SnackBarHelper.showMessage(context, 'Logout Successfully');
-                Navigation.pushAndRemove(context, const LoginScreen());
-              } else if (state is LogoutErrorState) {
-                SnackBarHelper.showError(context, state.msg);
-              }
+          IconButton(
+            onPressed: () {
+              SharedHelper.clearData();
+              Navigation.pushAndRemove(context, const LoginScreen());
             },
-            builder: (context, state) {
-              if (state is LogoutLoadingState) {
-                return const CircularProgressIndicator();
-              }
-              return IconButton(
-                onPressed: () {
-                  AuthCubit.get(context).logout();
-                },
-                icon: const Icon(
-                  Icons.exit_to_app_rounded,
-                  color: AppColors.white,
-                ),
-              );
-            },
-          ),
+            icon: const Icon(
+              Icons.exit_to_app_rounded,
+              color: AppColors.white,
+            ),
+          )
         ],
       ),
     );
