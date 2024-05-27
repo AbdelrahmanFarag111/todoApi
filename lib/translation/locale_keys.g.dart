@@ -4,8 +4,12 @@ abstract class  LocaleKeys {
   static const login = 'login';
   static const email = 'email';
   static const emailError = 'emailError';
+  static const name = 'name';
+  static const nameError = 'nameError';
   static const password = 'password';
   static const passwordError = 'passwordError';
+  static const password_confirmation = 'password_confirmation';
+  static const password_confirmationError = 'password_confirmationError';
   static const doNotHaveAnAccount = 'doNotHaveAnAccount';
   static const register = 'register';
   static const todoApp = 'todoApp';

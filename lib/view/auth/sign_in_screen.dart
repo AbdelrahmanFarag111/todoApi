@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todoapi/translation/locale_keys.g.dart';
-import 'package:todoapi/view/auth/sign_in_screen.dart';
+import 'package:todoapi/view/auth/login_screen.dart';
 import 'package:todoapi/view/tasks/tasks_screen.dart';
 import 'package:todoapi/view_model/cubits/auth_cubit.dart';
 import 'package:todoapi/view_model/utils/app_assets.dart';
@@ -11,15 +11,15 @@ import 'package:todoapi/view_model/utils/app_colors.dart';
 import 'package:todoapi/view_model/utils/navigation.dart';
 import 'package:todoapi/view_model/utils/snackbar.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Form(
-          key: AuthCubit.get(context).formKey,
+          key: AuthCubit.get(context).signInFormKey,
           child: ListView(
             padding: EdgeInsets.all(12.sp),
             children: [
@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
               Align(
                 alignment: AlignmentDirectional.center,
                 child: Text(
-                  LocaleKeys.login.tr(),
+                  LocaleKeys.register.tr(),
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
@@ -42,6 +42,21 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(
                 height: 12.h,
+              ),
+              TextFormField(
+                controller: AuthCubit.get(context).nameController,
+                decoration: InputDecoration(
+                  labelText: LocaleKeys.name.tr(),
+                ),
+                validator: (value) {
+                  if ((value ?? '').trim().isEmpty) {
+                    return LocaleKeys.nameError.tr();
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 6.h,
               ),
               TextFormField(
                 controller: AuthCubit.get(context).emailController,
@@ -70,6 +85,21 @@ class LoginScreen extends StatelessWidget {
                   return null;
                 },
               ),
+              SizedBox(
+                height: 6.h,
+              ),
+              TextFormField(
+                controller: AuthCubit.get(context).confirmPasswordController,
+                decoration: InputDecoration(
+                  labelText: LocaleKeys.password_confirmation.tr(),
+                ),
+                validator: (value) {
+                  if ((value ?? '').trim().isEmpty) {
+                    return LocaleKeys.password_confirmation.tr();
+                  }
+                  return null;
+                },
+              ),
               SizedBox(height: 12.h),
               Row(
                 children: [
@@ -85,10 +115,11 @@ class LoginScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigation.push(context, const SignInScreen());
+                      Navigation.push(context, const LoginScreen());
+
                     },
                     child: Text(
-                      LocaleKeys.register.tr(),
+                      LocaleKeys.login.tr(),
                       style: TextStyle(
                         fontSize: 14.sp,
                       ),
@@ -101,15 +132,15 @@ class LoginScreen extends StatelessWidget {
               ),
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
-                  if (state is LoginSuccessState) {
-                    SnackBarHelper.showMessage(context, 'Login Successfully');
+                  if (state is SignInSuccessState) {
+                    SnackBarHelper.showMessage(context, 'Sign In Successfully');
                     Navigation.pushAndRemove(context, const TasksScreen());
-                  } else if (state is LoginErrorState) {
+                  } else if (state is SignInErrorState) {
                     SnackBarHelper.showError(context, state.msg);
                   }
                 },
                 builder: (context, state) {
-                  if (state is LoginLoadingState) {
+                  if (state is SignInLoadingState) {
                     return const CircularProgressIndicator.adaptive();
                   }
                   return ElevatedButton(
@@ -118,11 +149,11 @@ class LoginScreen extends StatelessWidget {
                           .formKey
                           .currentState!
                           .validate()) {
-                        AuthCubit.get(context).login();
+                        AuthCubit.get(context).signIn();
                       }
                     },
                     child: Text(
-                      LocaleKeys.login.tr(),
+                      LocaleKeys.register.tr(),
                       style: TextStyle(fontSize: 16.sp, color: AppColors.white),
                     ),
                   );

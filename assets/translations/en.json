@@ -1,8 +1,12 @@
 {
   "login" : "Login",
   "email" : "Email",
+  "name" : "name",
+  "nameError" : "Please, Enter Your Name",
   "emailError": "Please, Enter Your Email",
   "password" : "Password",
+  "password_confirmation" : "password confirmation",
+  "password_confirmationError" : "Password do not match",
   "passwordError" : "Please, Enter Your Password",
   "doNotHaveAnAccount" : "Don't Have An Account?",
   "register" : "Register",
