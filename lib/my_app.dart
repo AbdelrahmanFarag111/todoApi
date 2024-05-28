@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todoapi/view/splash/splash_screen.dart';
 import 'package:todoapi/view_model/cubits/auth_cubit.dart';
+import 'package:todoapi/view_model/cubits/task_cubit/task_cubit.dart';
 import 'package:todoapi/view_model/themes/light_theme.dart';
 
 class MyApp extends StatelessWidget {
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (context) => AuthCubit(),
+            ),
+            BlocProvider(
+              create: (context) => TaskCubit(),
             ),
           ],
           child: MaterialApp(

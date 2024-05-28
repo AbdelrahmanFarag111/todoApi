@@ -15,4 +15,44 @@ final class GetTaskError extends TaskState {
   GetTaskError(this.msg);
 }
 
+final class GetMoreTaskLoading extends TaskState {}
+
+final class GetMoreTaskSuccess extends TaskState {}
+
+final class GetMoreTaskError extends TaskState {
+  final String msg;
+
+  GetMoreTaskError(this.msg);
+}
+
+final class AddTaskLoading extends TaskState {}
+
+final class AddTaskSuccess extends TaskState {}
+
+final class AddTaskError extends TaskState {
+  final String msg;
+
+  AddTaskError(this.msg);
+}
+
+final class EditTaskLoading extends TaskState {}
+
+final class EditTaskSuccess extends TaskState {}
+
+final class EditTaskError extends TaskState {
+  final String msg;
+
+  EditTaskError(this.msg);
+}
+
+final class DeleteTaskLoading extends TaskState {}
+
+final class DeleteTaskSuccess extends TaskState {}
+
+final class DeleteTaskError extends TaskState {
+  final String msg;
+
+  DeleteTaskError(this.msg);
+}
+
 final class UnauthenticatedState extends TaskState {}
