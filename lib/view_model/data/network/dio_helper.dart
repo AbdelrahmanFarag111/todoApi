@@ -43,6 +43,7 @@ class DioHelper {
     required String path,
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
+    FormData? formData,
     bool? withToken = false,
   }) async {
     try {
@@ -53,7 +54,7 @@ class DioHelper {
       }
       Response response = await _dio.post(
         path,
-        data: body,
+        data: formData ?? body,
         queryParameters: queryParameters,
       );
       return response;

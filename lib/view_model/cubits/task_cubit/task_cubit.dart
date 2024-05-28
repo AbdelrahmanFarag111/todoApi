@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:todoapi/model/task_model.dart';
 import 'package:todoapi/view_model/data/network/dio_helper.dart';
@@ -91,6 +92,66 @@ class TaskCubit extends Cubit<TaskState> {
         emit(GetMoreTaskError(
             error.response?.data?.toString() ?? 'Error on Get Tasks'));
       }
+      throw error;
+    });
+  }
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+
+  void clearData() {
+    titleController.clear();
+    descriptionController.clear();
+    startDateController.clear();
+    endDateController.clear();
+    image = null;
+  }
+
+
+
+  final ImagePicker picker = ImagePicker();
+  XFile? image;
+
+  void selectImage() async {
+    image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+    );
+    emit(SelectImageState());
+  }
+
+  Future<void> addTask() async {
+    emit(AddTaskLoading());
+    Task task = Task(
+      title: titleController.text,
+      description: descriptionController.text,
+      startDate: startDateController.text,
+      endDate: endDateController.text,
+      status: 'new',
+    );
+    FormData formData = FormData.fromMap(
+      {
+        ...task.toJson(),
+        if (image != null) 'image': await MultipartFile.fromFile(image!.path),
+      },
+    );
+    await DioHelper.post(
+      path: EndPoints.tasks,
+      formData: formData,
+    ).then((value) {
+      print(value.data);
+      tasks.insert(0, Task.fromJson(value.data['data']));
+      clearData();
+      emit(AddTaskSuccess());
+    }).catchError((error) {
+      if (error is DioException) {
+        print(error.response?.data);
+      }
+      emit(AddTaskError());
       throw error;
     });
   }

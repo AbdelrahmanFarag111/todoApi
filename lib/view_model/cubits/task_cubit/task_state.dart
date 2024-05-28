@@ -29,11 +29,7 @@ final class AddTaskLoading extends TaskState {}
 
 final class AddTaskSuccess extends TaskState {}
 
-final class AddTaskError extends TaskState {
-  final String msg;
-
-  AddTaskError(this.msg);
-}
+final class AddTaskError extends TaskState {}
 
 final class EditTaskLoading extends TaskState {}
 
@@ -56,3 +52,5 @@ final class DeleteTaskError extends TaskState {
 }
 
 final class UnauthenticatedState extends TaskState {}
+
+final class SelectImageState extends TaskState {}
