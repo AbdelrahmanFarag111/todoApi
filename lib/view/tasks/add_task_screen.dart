@@ -3,12 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:todoapi/translation/locale_keys.g.dart';
 import 'package:todoapi/view_model/cubits/task_cubit/task_cubit.dart';
 import 'package:todoapi/view_model/utils/app_colors.dart';
 
-import '../../../view_model/utils/app_assets.dart';
 
 class AddTaskScreen extends StatelessWidget {
   const AddTaskScreen({super.key});

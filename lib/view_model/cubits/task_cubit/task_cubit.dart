@@ -96,6 +96,13 @@ class TaskCubit extends Cubit<TaskState> {
     });
   }
 
+  void initData(int index) {
+    titleController.text = tasks[index].title ?? '';
+    descriptionController.text = tasks[index].description ?? '';
+    startDateController.text = tasks[index].startDate ?? '';
+    endDateController.text = tasks[index].endDate ?? '';
+  }
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController titleController = TextEditingController();
@@ -110,8 +117,6 @@ class TaskCubit extends Cubit<TaskState> {
     endDateController.clear();
     image = null;
   }
-
-
 
   final ImagePicker picker = ImagePicker();
   XFile? image;
@@ -153,6 +158,50 @@ class TaskCubit extends Cubit<TaskState> {
       }
       emit(AddTaskError());
       throw error;
+    });
+  }
+
+  Future<void> editTask(int index) async {
+    emit(EditTaskLoading());
+    Task task = Task(
+      title: titleController.text,
+      description: descriptionController.text,
+      startDate: startDateController.text,
+      endDate: endDateController.text,
+      status: tasks[index].status,
+    );
+    FormData formData = FormData.fromMap(
+      {
+        ...task.toJson(),
+        if (image != null) 'image': await MultipartFile.fromFile(image!.path),
+      },
+    );
+    await DioHelper.post(
+      path: '${EndPoints.tasks}/${tasks[index].id}',
+      formData: formData,
+    ).then((value) {
+      clearData();
+      emit(EditTaskSuccess());
+    }).catchError((error) {
+      if (error is DioException) {
+        print(error.response?.data);
+      }
+      emit(EditTaskError());
+      throw error;
+    });
+  }
+
+  Future<void> delete(int index) async {
+    emit(DeleteTaskLoading());
+    await DioHelper.delete(
+      path: '${EndPoints.tasks}/${tasks[index].id}',
+      withToken: true,
+    ).then((value) {
+      getTasks();
+      emit(DeleteTaskSuccess());
+    }).catchError((error) {
+      debugPrint(error.response?.data.toString());
+      emit(DeleteTaskError());
     });
   }
 }

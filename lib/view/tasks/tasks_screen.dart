@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,13 +48,6 @@ class TasksScreen extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.filter_list_rounded,
-                color: AppColors.white,
-              ),
-            ),
-            IconButton(
               onPressed: () {
                 SharedHelper.clearData();
                 Navigation.pushAndRemove(context, const LoginScreen());
@@ -81,7 +73,7 @@ class TasksScreen extends StatelessWidget {
             return Visibility(
               visible: state is! GetTaskLoading,
               replacement:
-              const Center(child: CircularProgressIndicator.adaptive()),
+                  const Center(child: CircularProgressIndicator.adaptive()),
               child: SafeArea(
                 child: Column(
                   children: [
@@ -95,20 +87,8 @@ class TasksScreen extends StatelessWidget {
                           padding: EdgeInsets.all(12.sp),
                           itemBuilder: (context, index) {
                             return TaskWidget(
-                              task: cubit.tasks[index],
-                              onTap: () {
-                                // showModalBottomSheet(
-                                //   context: context,
-                                //   enableDrag: true,
-                                //   showDragHandle: true,
-                                //   isDismissible: true,
-                                //   isScrollControlled: true,
-                                //   builder: (context) {
-                                //     return EditTaskScreen(index: index,);
-                                //   },
-                                // );
-                              },
-                            );
+                              task: cubit.tasks[index], index: index,
+                             );
                           },
                           separatorBuilder: (context, index) => SizedBox(
                             height: 12.h,
@@ -141,7 +121,7 @@ class TasksScreen extends StatelessWidget {
               isScrollControlled: true,
               showDragHandle: true,
               builder: (context) {
-                return AddTaskScreen();
+                return const AddTaskScreen();
               },
             );
           },

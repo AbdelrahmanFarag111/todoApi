@@ -35,21 +35,13 @@ final class EditTaskLoading extends TaskState {}
 
 final class EditTaskSuccess extends TaskState {}
 
-final class EditTaskError extends TaskState {
-  final String msg;
-
-  EditTaskError(this.msg);
-}
+final class EditTaskError extends TaskState {}
 
 final class DeleteTaskLoading extends TaskState {}
 
 final class DeleteTaskSuccess extends TaskState {}
 
-final class DeleteTaskError extends TaskState {
-  final String msg;
-
-  DeleteTaskError(this.msg);
-}
+final class DeleteTaskError extends TaskState {}
 
 final class UnauthenticatedState extends TaskState {}
 
