@@ -52,7 +52,6 @@ class TaskCubit extends Cubit<TaskState> {
     scrollController.addListener(() {
       if (scrollController.position.atEdge &&
           scrollController.position.pixels != 0) {
-        print('Bottom');
         getMoreTasks();
       }
     });
@@ -148,13 +147,11 @@ class TaskCubit extends Cubit<TaskState> {
       path: EndPoints.tasks,
       formData: formData,
     ).then((value) {
-      print(value.data);
       tasks.insert(0, Task.fromJson(value.data['data']));
       clearData();
       emit(AddTaskSuccess());
     }).catchError((error) {
       if (error is DioException) {
-        print(error.response?.data);
       }
       emit(AddTaskError());
       throw error;
@@ -184,7 +181,6 @@ class TaskCubit extends Cubit<TaskState> {
       emit(EditTaskSuccess());
     }).catchError((error) {
       if (error is DioException) {
-        print(error.response?.data);
       }
       emit(EditTaskError());
       throw error;
@@ -196,8 +192,8 @@ class TaskCubit extends Cubit<TaskState> {
     await DioHelper.delete(
       path: '${EndPoints.tasks}/${tasks[index].id}',
       withToken: true,
-    ).then((value) {
-      getTasks();
+    ).then((value) async{
+      await getTasks();
       emit(DeleteTaskSuccess());
     }).catchError((error) {
       debugPrint(error.response?.data.toString());

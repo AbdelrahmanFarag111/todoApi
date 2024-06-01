@@ -111,7 +111,6 @@ class TasksScreen extends StatelessWidget {
             );
           },
         ),
-        drawer: const Drawer(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
